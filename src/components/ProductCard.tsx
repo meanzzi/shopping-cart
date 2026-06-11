@@ -1,14 +1,15 @@
 import type { Product } from "../types";
+import { useCart } from "../context/CartContext";
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (product: Product) => void;
 }
 
-const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+const ProductCard = ({ product }: ProductCardProps) => {
+  const { addToCart } = useCart();
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-      {/* ... 이미지 및 정보 생략 ... */}
       <img
         src={product.image}
         alt={product.name}
@@ -29,12 +30,12 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
             {product.price.toLocaleString()}원
           </span>
           {/* 
-            [Props Drilling 학습 포인트 5]
-            드디어 최하단 컴포넌트인 ProductCard에서 
-            App으로부터 여러 단계를 거쳐 내려온 onAddToCart 함수를 실제로 사용합니다.
+            [Context API 적용 포인트 4]
+            이제 하위 컴포넌트에서 Context의 addToCart를 직접 호출합니다.
+            Props Drilling이 해결되었습니다.
           */}
           <button
-            onClick={() => onAddToCart(product)}
+            onClick={() => addToCart(product)}
             className="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors"
           >
             담기

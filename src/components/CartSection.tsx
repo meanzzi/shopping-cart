@@ -1,14 +1,10 @@
-import type { CartItem } from "../types";
+import { useCart } from "../context/CartContext";
 import CartList from "./CartList";
 import OrderSummary from "./OrderSummary";
 
-interface CartSectionProps {
-  cart: CartItem[];
-  onUpdateQuantity: (id: number, delta: number) => void;
-  onRemove: (id: number) => void;
-}
+const CartSection = () => {
+  const { cart } = useCart();
 
-const CartSection = ({ cart, onUpdateQuantity, onRemove }: CartSectionProps) => {
   return (
     <aside className="w-full lg:w-96 bg-white border border-slate-200 rounded-2xl p-6 h-fit sticky top-8">
       <div className="flex items-center justify-between mb-6">
@@ -18,14 +14,15 @@ const CartSection = ({ cart, onUpdateQuantity, onRemove }: CartSectionProps) => 
         </span>
       </div>
 
-      <CartList
-        cart={cart}
-        onUpdateQuantity={onUpdateQuantity}
-        onRemove={onRemove}
-      />
+      {/* 
+        [Context API 적용 포인트 5]
+        CartList와 OrderSummary로 더 이상 props를 전달하지 않습니다.
+        해당 컴포넌트들이 직접 Context를 사용합니다.
+      */}
+      <CartList />
 
       <div className="mt-8">
-        <OrderSummary cart={cart} />
+        <OrderSummary />
       </div>
     </aside>
   );

@@ -1,12 +1,13 @@
 import type { CartItem as CartItemType } from "../types";
+import { useCart } from "../context/CartContext";
 
 interface CartItemProps {
   item: CartItemType;
-  onUpdateQuantity: (id: number, delta: number) => void;
-  onRemove: (id: number) => void;
 }
 
-const CartItem = ({ item, onUpdateQuantity, onRemove }: CartItemProps) => {
+const CartItem = ({ item }: CartItemProps) => {
+  const { updateQuantity, removeFromCart } = useCart();
+
   return (
     <div className="flex items-center gap-4 py-4 border-b border-slate-100 last:border-0">
       <img
@@ -21,22 +22,23 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }: CartItemProps) => {
         </p>
       </div>
       <div className="flex items-center gap-2">
+        {/* [Context API 적용 포인트 6] Context의 함수를 직접 호출합니다. */}
         <button
-          onClick={() => onUpdateQuantity(item.id, -1)}
+          onClick={() => updateQuantity(item.id, -1)}
           className="w-8 h-8 flex items-center justify-center rounded border border-slate-200 hover:bg-slate-50"
         >
           -
         </button>
         <span className="w-8 text-center font-medium">{item.quantity}</span>
         <button
-          onClick={() => onUpdateQuantity(item.id, 1)}
+          onClick={() => updateQuantity(item.id, 1)}
           className="w-8 h-8 flex items-center justify-center rounded border border-slate-200 hover:bg-slate-50"
         >
           +
         </button>
       </div>
       <button
-        onClick={() => onRemove(item.id)}
+        onClick={() => removeFromCart(item.id)}
         className="text-red-500 hover:text-red-600 p-2"
       >
         <svg

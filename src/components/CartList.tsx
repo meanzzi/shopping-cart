@@ -1,16 +1,13 @@
-import type { CartItem as CartItemType } from "../types";
+import { useCart } from "../context/CartContext";
 import CartItem from "./CartItem";
 
-interface CartListProps {
-  cart: CartItemType[];
-  onUpdateQuantity: (id: number, delta: number) => void;
-  onRemove: (id: number) => void;
-}
+const CartList = () => {
+  const { cart } = useCart();
 
-const CartList = ({ cart, onUpdateQuantity, onRemove }: CartListProps) => {
   if (cart.length === 0) {
     return (
       <div className="py-20 text-center">
+        {/* ... 빈 장바구니 UI 생략 ... */}
         <div className="bg-slate-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,8 +37,6 @@ const CartList = ({ cart, onUpdateQuantity, onRemove }: CartListProps) => {
         <CartItem
           key={item.id}
           item={item}
-          onUpdateQuantity={onUpdateQuantity}
-          onRemove={onRemove}
         />
       ))}
     </div>

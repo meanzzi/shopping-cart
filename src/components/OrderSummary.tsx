@@ -1,16 +1,18 @@
-import type { CartItem } from "../types";
+import { useCart } from "../context/CartContext";
 
-interface OrderSummaryProps {
-  cart: CartItem[];
-}
-
-const OrderSummary = ({ cart }: OrderSummaryProps) => {
+const OrderSummary = () => {
+  const { cart } = useCart();
+  
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const tax = Math.floor(subtotal * 0.1);
   const total = subtotal + tax;
 
   return (
     <div className="bg-slate-50 p-6 rounded-xl space-y-4">
+      {/* 
+        [Context API 적용 포인트 7]
+        계산에 필요한 cart 데이터를 Context에서 직접 가져와 사용합니다.
+      */}
       <div className="flex justify-between text-slate-600">
         <span>상품 금액</span>
         <span>{subtotal.toLocaleString()}원</span>
